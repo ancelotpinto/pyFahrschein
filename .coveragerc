@@ -1,0 +1,16 @@
+[paths]
+source =
+   fahrschein
+   */site-packages
+
+[run]
+branch = true
+source =
+    fahrschein
+    tests
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit = *migrations*

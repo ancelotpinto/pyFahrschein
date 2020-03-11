@@ -1,0 +1,44 @@
+language: python
+dist: xenial
+os: [linux]
+cache: false
+env:
+  global:
+    - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+    - SEGFAULT_SIGNALS=all
+jobs:
+  include:
+    - env:
+        - TOXENV=py37
+      python: '3.7'
+    - env:
+        - TOXENV=py38
+      python: '3.8'
+    - os: osx
+      language: generic
+      env:
+        - TOXENV=py38
+      python: '3.8'
+before_install:
+  - python --version
+  - uname -a
+  - lsb_release -a || true
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      [[ $TOXENV =~ py3 ]] && brew upgrade python
+      [[ $TOXENV =~ py2 ]] && brew install python@2
+      export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
+    fi
+install:
+  - virtualenv --version
+  - pip --version
+  - tox --version
+script:
+  - tox -v
+after_failure:
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
+notifications:
+  email:
+    on_success: never
+    on_failure: always
