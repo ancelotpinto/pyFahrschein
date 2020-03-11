@@ -30,7 +30,7 @@ before_install:
       export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
     fi
 install:
-  - python -m pip install --progress-bar=off tox
+  - python -m pip install --progress-bar=off tox poetry
   - virtualenv --version
   - pip --version
   - tox --version
